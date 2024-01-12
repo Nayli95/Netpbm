@@ -88,7 +88,7 @@ var testRotate90PGM = []int{
 }
 
 func TestReadPGM(t *testing.T) {
-	pgm, err := Netpbm.ReadPGM("./testImages/pgm/testP2.pgm")
+	pgm, err := ReadPGM("./testImages/pgm/testP2.pgm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -111,11 +111,11 @@ func TestReadPGM(t *testing.T) {
 			t.Errorf("Pixel at (%d, %d) not read correctly", x, y)
 		}
 	}
-	pgm, err = Netpbm.ReadPGM("./testImages/pgm/testP5.pgm")
+	pgm, err = ReadPGM("./testImages/pgm/testP5.pgm")
 }
 
 func TestSizePGM(t *testing.T) {
-	pgm, err := Netpbm.ReadPGM("./testImages/pgm/testP2.pgm")
+	pgm, err := ReadPGM("./testImages/pgm/testP2.pgm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -129,7 +129,7 @@ func TestSizePGM(t *testing.T) {
 }
 
 func TestAtPGM(t *testing.T) {
-	pgm, err := Netpbm.ReadPGM("./testImages/pgm/testP2.pgm")
+	pgm, err := ReadPGM("./testImages/pgm/testP2.pgm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -139,7 +139,7 @@ func TestAtPGM(t *testing.T) {
 }
 
 func TestSetPGM(t *testing.T) {
-	pgm, err := Netpbm.ReadPGM("./testImages/pgm/testP2.pgm")
+	pgm, err := ReadPGM("./testImages/pgm/testP2.pgm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -150,13 +150,13 @@ func TestSetPGM(t *testing.T) {
 }
 
 func TestSavePGM(t *testing.T) {
-	pgm, err := Netpbm.ReadPGM("./testImages/pgm/testP2.pgm")
+	pgm, err := ReadPGM("./testImages/pgm/testP2.pgm")
 	if err != nil {
 		t.Error(err)
 	}
 	pgm.SetMagicNumber("P2")
 	pgm.Save("./testImages/pgm/testP2a.pgm")
-	pgm, err = Netpbm.ReadPGM("./testImages/pgm/testP2a.pgm")
+	pgm, err = ReadPGM("./testImages/pgm/testP2a.pgm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -179,13 +179,13 @@ func TestSavePGM(t *testing.T) {
 			t.Errorf("Pixel at (%d, %d) not read correctly", x, y)
 		}
 	}
-	pgm, err = Netpbm.ReadPGM("./testImages/pgm/testP5.pgm")
+	pgm, err = ReadPGM("./testImages/pgm/testP5.pgm")
 	if err != nil {
 		t.Error(err)
 	}
 	pgm.SetMagicNumber("P5")
 	pgm.Save("./testImages/pgm/testP5a.pgm")
-	pgm, err = Netpbm.ReadPGM("./testImages/pgm/testP5a.pgm")
+	pgm, err = ReadPGM("./testImages/pgm/testP5a.pgm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -211,7 +211,7 @@ func TestSavePGM(t *testing.T) {
 }
 
 func TestInvertPGM(t *testing.T) {
-	pgm, err := Netpbm.ReadPGM("./testImages/pgm/testP2.pgm")
+	pgm, err := ReadPGM("./testImages/pgm/testP2.pgm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -226,7 +226,7 @@ func TestInvertPGM(t *testing.T) {
 }
 
 func TestFlipPGM(t *testing.T) {
-	pgm, err := Netpbm.ReadPGM("./testImages/pgm/testP2.pgm")
+	pgm, err := ReadPGM("./testImages/pgm/testP2.pgm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -241,7 +241,7 @@ func TestFlipPGM(t *testing.T) {
 }
 
 func TestFlopPGM(t *testing.T) {
-	pgm, err := Netpbm.ReadPGM("./testImages/pgm/testP2.pgm")
+	pgm, err := ReadPGM("./testImages/pgm/testP2.pgm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -256,7 +256,7 @@ func TestFlopPGM(t *testing.T) {
 }
 
 func TestRotate90CWPGM(t *testing.T) {
-	pgm, err := Netpbm.ReadPGM("./testImages/pgm/testP2.pgm")
+	pgm, err := ReadPGM("./testImages/pgm/testP2.pgm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -271,7 +271,7 @@ func TestRotate90CWPGM(t *testing.T) {
 }
 
 func TestSetMagicNumberPGM(t *testing.T) {
-	pgm, err := Netpbm.ReadPGM("./testImages/pgm/testP2.pgm")
+	pgm, err := ReadPGM("./testImages/pgm/testP2.pgm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -282,7 +282,7 @@ func TestSetMagicNumberPGM(t *testing.T) {
 }
 
 func TestSetMaxValuePGM(t *testing.T) {
-	pgm, err := Netpbm.ReadPGM("./testImages/pgm/testP2.pgm")
+	pgm, err := ReadPGM("./testImages/pgm/testP2.pgm")
 	if err != nil {
 		t.Error(err)
 	}
