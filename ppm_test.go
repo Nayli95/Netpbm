@@ -412,7 +412,6 @@ func TestPPMSave(t *testing.T) {
 			t.Errorf("Pixel at (%d, %d) not read correctly", x, y)
 		}
 	}
-	// remove the test files
 	err = os.Remove("./testImages/ppm/testP3a.ppm")
 	if err != nil {
 		t.Error(err)
