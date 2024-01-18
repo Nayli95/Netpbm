@@ -237,7 +237,6 @@ func TestSavePGM(t *testing.T) {
 			t.Errorf("Pixel at (%d, %d) not read correctly", x, y)
 		}
 	}
-	// remove the test files
 	err = os.Remove("./testImages/pgm/testP2a.pgm")
 	if err != nil {
 		t.Error(err)
@@ -332,7 +331,7 @@ func TestSetMaxValuePGM(t *testing.T) {
 	for i := 0; i < imageWidth*imageHeight; i++ {
 		x := i % imageWidth
 		y := i / imageWidth
-		if pgm.data[y][x] != testData[i]*uint8(5)/oldMax {
+		if pgm.data[y][x] != uint8(testData[i]*5)/uint8(oldMax) {
 			t.Errorf("Pixel at (%d, %d) not read correctly, expected %d, got %d", x, y, uint8(float64(testData[i])*float64(5)/float64(oldMax)), pgm.data[y][x])
 		}
 	}
@@ -356,7 +355,7 @@ func TestToPBM(t *testing.T) {
 	for i := 0; i < imageWidth*imageHeight; i++ {
 		x := i % imageWidth
 		y := i / imageWidth
-		if pbm.data[y][x] != (testData[i] > pgm.max/2) {
+		if pbm.data[y][x] != (testData[i] < uint8(pgm.max/2)) {
 			t.Errorf("Pixel at (%d, %d) not read correctly", x, y)
 		}
 	}

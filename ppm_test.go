@@ -575,8 +575,8 @@ func TestPPMToPBM(t *testing.T) {
 	for i := 0; i < imageWidth*imageHeight; i++ {
 		x := i % imageWidth
 		y := i / imageWidth
-		if pbm.data[y][x] != (uint8((int(imagePPMData[i].R)+int(imagePPMData[i].G)+int(imagePPMData[i].B))/3) > ppm.max/2) {
-			t.Errorf("Pixel at (%d, %d) not converted correctly wanted %t got %t", x, y, uint8((int(imagePPMData[i].R)+int(imagePPMData[i].G)+int(imagePPMData[i].B))/3) > ppm.max/2, pbm.data[y][x])
+		if pbm.data[y][x] != (uint8((int(imagePPMData[i].R)+int(imagePPMData[i].G)+int(imagePPMData[i].B))/3) > uint8(ppm.max/2)) {
+			t.Errorf("Pixel at (%d, %d) not converted correctly wanted %t got %t", x, y, uint8((int(imagePPMData[i].R)+int(imagePPMData[i].G)+int(imagePPMData[i].B))/3) > uint8(ppm.max/2), pbm.data[y][x])
 		}
 	}
 }
