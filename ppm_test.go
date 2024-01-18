@@ -1,7 +1,6 @@
 package Netpbm
 
 import (
-	"github.com/mkarten/Netpbm"
 	"os"
 	"testing"
 )
@@ -10,7 +9,7 @@ const imagePPMWidth = 15
 const imagePPMHeight = 15
 const imagePPMMax = 255
 
-var imagePPMData = []Netpbm.Pixel{
+var imagePPMData = []Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255},
@@ -28,7 +27,7 @@ var imagePPMData = []Netpbm.Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 }
 
-var imagePPMInvert = []Netpbm.Pixel{
+var imagePPMInvert = []Pixel{
 	{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0},
 	{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {0, 0, 241}, {0, 0, 241}, {0, 0, 241}, {0, 0, 241}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0},
 	{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {0, 0, 241}, {0, 0, 241}, {0, 0, 241}, {0, 0, 241}, {0, 0, 241}, {0, 0, 241}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0},
@@ -46,7 +45,7 @@ var imagePPMInvert = []Netpbm.Pixel{
 	{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0},
 }
 
-var imagePPMFlip = []Netpbm.Pixel{
+var imagePPMFlip = []Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
@@ -64,7 +63,7 @@ var imagePPMFlip = []Netpbm.Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 }
 
-var imagePPMFlop = []Netpbm.Pixel{
+var imagePPMFlop = []Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {255, 255, 14}, {255, 255, 14}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
@@ -82,7 +81,7 @@ var imagePPMFlop = []Netpbm.Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 }
 
-var imagePPMRotate90 = []Netpbm.Pixel{
+var imagePPMRotate90 = []Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {255, 255, 14}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
@@ -100,7 +99,7 @@ var imagePPMRotate90 = []Netpbm.Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 }
 
-var imagePPMDrawLine = []Netpbm.Pixel{
+var imagePPMDrawLine = []Pixel{
 	{0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
@@ -118,7 +117,7 @@ var imagePPMDrawLine = []Netpbm.Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 255, 0},
 }
 
-var imagePPMDrawRectangle = []Netpbm.Pixel{
+var imagePPMDrawRectangle = []Pixel{
 	{0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0},
 	{0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
@@ -136,7 +135,7 @@ var imagePPMDrawRectangle = []Netpbm.Pixel{
 	{0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 }
 
-var imagePPMDrawFilledRectangle = []Netpbm.Pixel{
+var imagePPMDrawFilledRectangle = []Pixel{
 	{0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0},
 	{0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0},
 	{0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0},
@@ -154,7 +153,7 @@ var imagePPMDrawFilledRectangle = []Netpbm.Pixel{
 	{0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0},
 }
 
-var imagePPMDrawCircle = []Netpbm.Pixel{
+var imagePPMDrawCircle = []Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
@@ -172,7 +171,7 @@ var imagePPMDrawCircle = []Netpbm.Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 }
 
-var imagePPMDrawFilledCircle = []Netpbm.Pixel{
+var imagePPMDrawFilledCircle = []Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
@@ -190,7 +189,7 @@ var imagePPMDrawFilledCircle = []Netpbm.Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 }
 
-var imagePPMDrawTriangle = []Netpbm.Pixel{
+var imagePPMDrawTriangle = []Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
@@ -208,7 +207,7 @@ var imagePPMDrawTriangle = []Netpbm.Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 }
 
-var imagePPMDrawFilledTriangle = []Netpbm.Pixel{
+var imagePPMDrawFilledTriangle = []Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
@@ -226,7 +225,7 @@ var imagePPMDrawFilledTriangle = []Netpbm.Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 }
 
-var imagePPMDrawPolygon = []Netpbm.Pixel{
+var imagePPMDrawPolygon = []Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
@@ -244,7 +243,7 @@ var imagePPMDrawPolygon = []Netpbm.Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 }
 
-var imagePPMDrawFilledPolygon = []Netpbm.Pixel{
+var imagePPMDrawFilledPolygon = []Pixel{
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
 	{255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {0, 255, 0}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255}, {255, 255, 255},
@@ -263,7 +262,7 @@ var imagePPMDrawFilledPolygon = []Netpbm.Pixel{
 }
 
 func TestReadPPM(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/testP3.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/testP3.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -286,7 +285,7 @@ func TestReadPPM(t *testing.T) {
 			t.Errorf("Pixel at (%d, %d) not read correctly", x, y)
 		}
 	}
-	ppm, err = Netpbm.ReadPPM("./testImages/ppm/testP6.ppm")
+	ppm, err = ReadPPM("./testImages/ppm/testP6.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -312,7 +311,7 @@ func TestReadPPM(t *testing.T) {
 }
 
 func TestPPMSize(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/testP3.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/testP3.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -323,7 +322,7 @@ func TestPPMSize(t *testing.T) {
 }
 
 func TestPPMAt(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/testP3.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/testP3.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -337,11 +336,11 @@ func TestPPMAt(t *testing.T) {
 }
 
 func TestPPMSet(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/testP3.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/testP3.ppm")
 	if err != nil {
 		t.Error(err)
 	}
-	testPix := Netpbm.Pixel{12, 34, 55}
+	testPix := Pixel{12, 34, 55}
 	ppm.Set(0, 0, testPix)
 	if ppm.At(0, 0) != testPix {
 		t.Error("Pixel not set correctly")
@@ -349,7 +348,7 @@ func TestPPMSet(t *testing.T) {
 }
 
 func TestPPMSave(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/testP3.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/testP3.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -358,7 +357,7 @@ func TestPPMSave(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	ppm, err = Netpbm.ReadPPM("./testImages/ppm/testP3a.ppm")
+	ppm, err = ReadPPM("./testImages/ppm/testP3a.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -381,7 +380,7 @@ func TestPPMSave(t *testing.T) {
 			t.Errorf("Pixel at (%d, %d) not read correctly", x, y)
 		}
 	}
-	ppm, err = Netpbm.ReadPPM("./testImages/ppm/testP6.ppm")
+	ppm, err = ReadPPM("./testImages/ppm/testP6.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -390,7 +389,7 @@ func TestPPMSave(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	ppm, err = Netpbm.ReadPPM("./testImages/ppm/testP6a.ppm")
+	ppm, err = ReadPPM("./testImages/ppm/testP6a.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -425,7 +424,7 @@ func TestPPMSave(t *testing.T) {
 }
 
 func TestPPMInvert(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/testP3.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/testP3.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -441,7 +440,7 @@ func TestPPMInvert(t *testing.T) {
 }
 
 func TestPPMFlip(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/testP3.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/testP3.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -456,7 +455,7 @@ func TestPPMFlip(t *testing.T) {
 }
 
 func TestPPMFlop(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/testP3.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/testP3.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -471,7 +470,7 @@ func TestPPMFlop(t *testing.T) {
 }
 
 func TestPPMSetMagicNumber(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/testP3.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/testP3.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -486,7 +485,7 @@ func TestPPMSetMagicNumber(t *testing.T) {
 }
 
 func TestPPMSetMaxValue(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/testP3.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/testP3.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -511,7 +510,7 @@ func TestPPMSetMaxValue(t *testing.T) {
 }
 
 func TestPPMRotate90CW(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/testP3.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/testP3.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -532,7 +531,7 @@ func TestPPMRotate90CW(t *testing.T) {
 }
 
 func TestPPMToPGM(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/testP3.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/testP3.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -559,7 +558,7 @@ func TestPPMToPGM(t *testing.T) {
 }
 
 func TestPPMToPBM(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/testP3.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/testP3.ppm")
 	if err != nil {
 		t.Error(err)
 	}
@@ -583,12 +582,12 @@ func TestPPMToPBM(t *testing.T) {
 }
 
 func TestPPMDrawLine(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/blank.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/blank.ppm")
 	if err != nil {
 		t.Error(err)
 	}
-	ppm.DrawLine(Netpbm.Point{X: 3, Y: 5}, Netpbm.Point{X: 11, Y: 5}, Netpbm.Pixel{R: 255, G: 0, B: 0})
-	ppm.DrawLine(Netpbm.Point{X: 0, Y: 0}, Netpbm.Point{X: 20, Y: 20}, Netpbm.Pixel{R: 0, G: 255, B: 0})
+	ppm.DrawLine(Point{X: 3, Y: 5}, Point{X: 11, Y: 5}, Pixel{R: 255, G: 0, B: 0})
+	ppm.DrawLine(Point{X: 0, Y: 0}, Point{X: 20, Y: 20}, Pixel{R: 0, G: 255, B: 0})
 
 	for i := 0; i < imageWidth*imageHeight; i++ {
 		x := i % imageWidth
@@ -600,12 +599,12 @@ func TestPPMDrawLine(t *testing.T) {
 }
 
 func TestPPMDrawRectangle(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/blank.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/blank.ppm")
 	if err != nil {
 		t.Error(err)
 	}
-	ppm.DrawRectangle(Netpbm.Point{X: 3, Y: 5}, 7, 5, Netpbm.Pixel{R: 255, G: 0, B: 0})
-	ppm.DrawRectangle(Netpbm.Point{X: 0, Y: 0}, 20, 20, Netpbm.Pixel{R: 0, G: 255, B: 0})
+	ppm.DrawRectangle(Point{X: 3, Y: 5}, 7, 5, Pixel{R: 255, G: 0, B: 0})
+	ppm.DrawRectangle(Point{X: 0, Y: 0}, 20, 20, Pixel{R: 0, G: 255, B: 0})
 
 	for i := 0; i < imageWidth*imageHeight; i++ {
 		x := i % imageWidth
@@ -617,12 +616,12 @@ func TestPPMDrawRectangle(t *testing.T) {
 }
 
 func TestPPMDrawFilledRectangle(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/blank.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/blank.ppm")
 	if err != nil {
 		t.Error(err)
 	}
-	ppm.DrawFilledRectangle(Netpbm.Point{X: 0, Y: 0}, 20, 20, Netpbm.Pixel{R: 0, G: 255, B: 0})
-	ppm.DrawFilledRectangle(Netpbm.Point{X: 3, Y: 5}, 7, 5, Netpbm.Pixel{R: 255, G: 0, B: 0})
+	ppm.DrawFilledRectangle(Point{X: 0, Y: 0}, 20, 20, Pixel{R: 0, G: 255, B: 0})
+	ppm.DrawFilledRectangle(Point{X: 3, Y: 5}, 7, 5, Pixel{R: 255, G: 0, B: 0})
 
 	for i := 0; i < imageWidth*imageHeight; i++ {
 		x := i % imageWidth
@@ -634,11 +633,11 @@ func TestPPMDrawFilledRectangle(t *testing.T) {
 }
 
 func TestPPMDrawCircle(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/blank.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/blank.ppm")
 	if err != nil {
 		t.Error(err)
 	}
-	ppm.DrawCircle(Netpbm.Point{X: 7, Y: 7}, 5, Netpbm.Pixel{R: 0, G: 255, B: 0})
+	ppm.DrawCircle(Point{X: 7, Y: 7}, 5, Pixel{R: 0, G: 255, B: 0})
 
 	for i := 0; i < imageWidth*imageHeight; i++ {
 		x := i % imageWidth
@@ -650,11 +649,11 @@ func TestPPMDrawCircle(t *testing.T) {
 }
 
 func TestPPMDrawFilledCircle(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/blank.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/blank.ppm")
 	if err != nil {
 		t.Error(err)
 	}
-	ppm.DrawFilledCircle(Netpbm.Point{X: 7, Y: 7}, 5, Netpbm.Pixel{R: 0, G: 255, B: 0})
+	ppm.DrawFilledCircle(Point{X: 7, Y: 7}, 5, Pixel{R: 0, G: 255, B: 0})
 
 	for i := 0; i < imageWidth*imageHeight; i++ {
 		x := i % imageWidth
@@ -666,11 +665,11 @@ func TestPPMDrawFilledCircle(t *testing.T) {
 }
 
 func TestPPMDrawTriangle(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/blank.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/blank.ppm")
 	if err != nil {
 		t.Error(err)
 	}
-	ppm.DrawTriangle(Netpbm.Point{X: 1, Y: 1}, Netpbm.Point{X: 8, Y: 1}, Netpbm.Point{X: 8, Y: 8}, Netpbm.Pixel{R: 0, G: 255, B: 0})
+	ppm.DrawTriangle(Point{X: 1, Y: 1}, Point{X: 8, Y: 1}, Point{X: 8, Y: 8}, Pixel{R: 0, G: 255, B: 0})
 
 	for i := 0; i < imageWidth*imageHeight; i++ {
 		x := i % imageWidth
@@ -682,11 +681,11 @@ func TestPPMDrawTriangle(t *testing.T) {
 }
 
 func TestPPMDrawFilledTriangle(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/blank.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/blank.ppm")
 	if err != nil {
 		t.Error(err)
 	}
-	ppm.DrawFilledTriangle(Netpbm.Point{X: 1, Y: 1}, Netpbm.Point{X: 8, Y: 1}, Netpbm.Point{X: 8, Y: 8}, Netpbm.Pixel{R: 0, G: 255, B: 0})
+	ppm.DrawFilledTriangle(Point{X: 1, Y: 1}, Point{X: 8, Y: 1}, Point{X: 8, Y: 8}, Pixel{R: 0, G: 255, B: 0})
 
 	for i := 0; i < imageWidth*imageHeight; i++ {
 		x := i % imageWidth
@@ -698,16 +697,16 @@ func TestPPMDrawFilledTriangle(t *testing.T) {
 }
 
 func TestPPMDrawPolygon(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/blank.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/blank.ppm")
 	if err != nil {
 		t.Error(err)
 	}
-	ppm.DrawPolygon([]Netpbm.Point{
+	ppm.DrawPolygon([]Point{
 		{X: 3, Y: 1},
 		{X: 0, Y: 10},
 		{X: 10, Y: 10},
 		{X: 10, Y: 1},
-	}, Netpbm.Pixel{R: 0, G: 255, B: 0})
+	}, Pixel{R: 0, G: 255, B: 0})
 
 	for i := 0; i < imageWidth*imageHeight; i++ {
 		x := i % imageWidth
@@ -719,16 +718,16 @@ func TestPPMDrawPolygon(t *testing.T) {
 }
 
 func TestPPMDrawFilledPolygon(t *testing.T) {
-	ppm, err := Netpbm.ReadPPM("./testImages/ppm/blank.ppm")
+	ppm, err := ReadPPM("./testImages/ppm/blank.ppm")
 	if err != nil {
 		t.Error(err)
 	}
-	ppm.DrawFilledPolygon([]Netpbm.Point{
+	ppm.DrawFilledPolygon([]Point{
 		{X: 3, Y: 1},
 		{X: 0, Y: 10},
 		{X: 10, Y: 10},
 		{X: 10, Y: 1},
-	}, Netpbm.Pixel{R: 0, G: 255, B: 0})
+	}, Pixel{R: 0, G: 255, B: 0})
 
 	for i := 0; i < imageWidth*imageHeight; i++ {
 		x := i % imageWidth
