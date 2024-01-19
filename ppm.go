@@ -323,7 +323,7 @@ func (ppm *PPM) ToPBM() *PBM {
 
 			average := (uint16(ppm.data[y][x].R) + uint16(ppm.data[y][x].G) + uint16(ppm.data[y][x].B)) / 3
 
-			pbm.data[y][x] = average < uint16(threshold)
+			pbm.data[y][x] = average > uint16(threshold)
 		}
 	}
 	return pbm
@@ -382,10 +382,11 @@ func (ppm *PPM) DrawLine(p1, p2 Point, color Pixel) {
 }
 
 func (ppm *PPM) DrawRectangle(p1 Point, width, height int, color Pixel) {
-	ppm.DrawLine(p1, Point{X: p1.X + width - 1, Y: p1.Y}, color)
-	ppm.DrawLine(Point{X: p1.X + width - 1, Y: p1.Y}, Point{X: p1.X + width - 1, Y: p1.Y + height - 1}, color)
-	ppm.DrawLine(Point{X: p1.X + width - 1, Y: p1.Y + height - 1}, Point{X: p1.X, Y: p1.Y + height - 1}, color)
-	ppm.DrawLine(Point{X: p1.X, Y: p1.Y + height - 1}, p1, color)
+	for y := p1.Y; y < p1.Y+height && y < ppm.height; y++ {
+		for x := p1.X; x < p1.X+width && x < ppm.width; x++ {
+			ppm.Set(x, y, color)
+		}
+	}
 }
 
 func (ppm *PPM) DrawFilledRectangle(p1 Point, width, height int, color Pixel) {
