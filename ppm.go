@@ -14,7 +14,7 @@ type PPM struct {
 	data          [][]Pixel
 	width, height int
 	magicNumber   string
-	max           int
+	max           uint
 }
 
 type Pixel struct {
@@ -61,7 +61,7 @@ func ReadPPM(filename string) (*PPM, error) {
 		return nil, fmt.Errorf("error reading max value: %v", err)
 	}
 	maxValue = strings.TrimSpace(maxValue)
-	var max int
+	var max uint
 	_, err = fmt.Sscanf(maxValue, "%d", &max)
 	if err != nil {
 		return nil, fmt.Errorf("invalid max value: %v", err)
@@ -245,7 +245,7 @@ func (ppm *PPM) SetMaxValue(maxValue uint8) {
 	}
 
 	// Update the max value
-	ppm.max = int(maxValue)
+	ppm.max = uint(maxValue)
 }
 
 func (ppm *PPM) Rotate90CW() {
@@ -382,21 +382,48 @@ func (ppm *PPM) DrawLine(p1, p2 Point, color Pixel) {
 }
 
 func (ppm *PPM) DrawRectangle(p1 Point, width, height int, color Pixel) {
-	for y := p1.Y; y < p1.Y+height && y < ppm.height; y++ {
-		for x := p1.X; x < p1.X+width && x < ppm.width; x++ {
-			ppm.Set(x, y, color)
-		}
-	}
+	p2 := Point{p1.X + width, p1.Y}
+	p3 := Point{p1.X + width, p1.Y + height}
+	p4 := Point{p1.X, p1.Y + height}
+
+	// Draw the four sides of the rectangle
+	ppm.DrawLine(p1, p2, color)
+	ppm.DrawLine(p2, p3, color)
+	ppm.DrawLine(p3, p4, color)
+	ppm.DrawLine(p4, p1, color)
 }
 
 func (ppm *PPM) DrawFilledRectangle(p1 Point, width, height int, color Pixel) {
-	ppm.DrawLine(p1, Point{X: p1.X + width - 1, Y: p1.Y}, color)
-	ppm.DrawLine(Point{X: p1.X + width - 1, Y: p1.Y}, Point{X: p1.X + width - 1, Y: p1.Y + height - 1}, color)
-	ppm.DrawLine(Point{X: p1.X + width - 1, Y: p1.Y + height - 1}, Point{X: p1.X, Y: p1.Y + height - 1}, color)
-	ppm.DrawLine(Point{X: p1.X, Y: p1.Y + height - 1}, p1, color)
-
-	for y := p1.Y + 1; y < p1.Y+height-1; y++ {
-		ppm.DrawLine(Point{X: p1.X + 1, Y: y}, Point{X: p1.X + width - 2, Y: y}, color)
+	// If the height of the rectangle is within the limit of the file
+	if p1.Y+height < ppm.height {
+		for y := p1.Y; y < p1.Y+height; y++ {
+			// If the width of the rectangle is within the data of the file
+			if p1.X+width < ppm.width {
+				for x := p1.X; x <= p1.X+width; x++ {
+					ppm.data[y][x] = color
+				}
+				// If the width of the rectangle is within the data of the file
+			} else if p1.X+width > ppm.width {
+				for x := p1.X; x < ppm.width; x++ {
+					ppm.data[y][x] = color
+				}
+			}
+		}
+		// If the height of the rectangle goes beyond the limit of the file
+	} else if p1.Y+height > ppm.height {
+		for y := p1.Y; y < ppm.height; y++ {
+			// If the width of the rectangle is within the data of the file
+			if p1.X+width < ppm.width {
+				for x := p1.X; x <= p1.X+width; x++ {
+					ppm.data[y][x] = color
+				}
+				// If the width of the rectangle is within the data of the file
+			} else if p1.X+width > ppm.width {
+				for x := p1.X; x < ppm.width; x++ {
+					ppm.data[y][x] = color
+				}
+			}
+		}
 	}
 }
 
@@ -613,4 +640,66 @@ func abs(x int) int {
 		return -x
 	}
 	return x
+}
+
+// KNearestNeighbors redimensionne l'image PPM en utilisant l'algorithme des k-plus proches voisins.
+func (ppm *PPM) KNearestNeighbors(newWidth, newHeight int) {
+	// Calculer les facteurs d'échelle pour la largeur et la hauteur
+	scaleX := float64(ppm.width) / float64(newWidth)
+	scaleY := float64(ppm.height) / float64(newHeight)
+
+	// Créer une nouvelle image PPM avec les dimensions souhaitées
+	resizedPPM := &PPM{
+		data:        make([][]Pixel, newHeight),
+		width:       newWidth,
+		height:      newHeight,
+		magicNumber: ppm.magicNumber,
+		max:         ppm.max,
+	}
+
+	// Initialiser les données de pixels pour l'image redimensionnée
+	for i := range resizedPPM.data {
+		resizedPPM.data[i] = make([]Pixel, newWidth)
+	}
+
+	// Itérer sur chaque pixel de l'image redimensionnée
+	for y := 0; y < newHeight; y++ {
+		for x := 0; x < newWidth; x++ {
+			// Calculer les coordonnées de pixel correspondantes dans l'image originale
+			origX := int(float64(x) * scaleX)
+			origY := int(float64(y) * scaleY)
+
+			// Trouver les k-plus proches voisins
+			neighbors := make([]Pixel, 0)
+			for i := -1; i <= 1; i++ {
+				for j := -1; j <= 1; j++ {
+					nx := origX + i
+					ny := origY + j
+
+					// S'assurer que les coordonnées sont dans les limites de l'image originale
+					if nx >= 0 && nx < ppm.width && ny >= 0 && ny < ppm.height {
+						neighbors = append(neighbors, ppm.data[ny][nx])
+					}
+				}
+			}
+
+			// Calculer la couleur moyenne des k-plus proches voisins
+			var totalR, totalG, totalB uint64
+			for _, color := range neighbors {
+				totalR += uint64(color.R)
+				totalG += uint64(color.G)
+				totalB += uint64(color.B)
+			}
+
+			avgR := uint8(totalR / uint64(len(neighbors)))
+			avgG := uint8(totalG / uint64(len(neighbors)))
+			avgB := uint8(totalB / uint64(len(neighbors)))
+
+			// Définir la couleur du pixel dans l'image redimensionnée
+			resizedPPM.data[y][x] = Pixel{R: avgR, G: avgG, B: avgB}
+		}
+	}
+
+	// Remplacer l'image originale par l'image redimensionnée
+	*ppm = *resizedPPM
 }
