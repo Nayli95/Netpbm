@@ -14,25 +14,24 @@ type PBM struct {
 	magicNumber   string
 }
 
-// ReadPBM lie l'image PBM du fichier et retourne dans la struct avec les infos de l'image.
+// ReadPBM lie l'image PBM du fichier et return dans la struct avec les infos de l'image.
 func ReadPBM(filename string) (*PBM, error) {
 	pbm := PBM{}
 
-	// Open the file
+	// Ouvrir le fichier
 	file, err := os.Open(filename)
 	if err != nil {
 		return nil, fmt.Errorf("error opening file: %v", err)
 	}
 	defer file.Close()
 
-	// Scanner for text-based information
+	// Scanner pour extraire les informations basées sur du texte.
 	scanner := bufio.NewScanner(file)
-	// reader := bufio.NewReader(file)
 	confirmOne := false
 	confirmTwo := false
 	Line := 0
 
-	// Ignore comments and empty lines
+	// Ignorer les commentaires et les lignes vides.
 	for scanner.Scan() {
 		if scanner.Text() == "" {
 			continue
@@ -41,6 +40,7 @@ func ReadPBM(filename string) (*PBM, error) {
 		if strings.HasPrefix(scanner.Text(), "#") {
 			continue
 		} else if !confirmOne {
+			// Lire le magic number qui indique le format du fichier PBM.
 			pbm.magicNumber = scanner.Text()
 			confirmOne = true
 		} else if !confirmTwo {
@@ -58,7 +58,7 @@ func ReadPBM(filename string) (*PBM, error) {
 
 		} else {
 			if pbm.magicNumber == "P1" {
-				// Process P1 format
+				// Processus pour le format P1.
 				test := strings.Fields(scanner.Text())
 				for i := 0; i < pbm.width; i++ {
 					if test[i] == "1" {
@@ -73,19 +73,19 @@ func ReadPBM(filename string) (*PBM, error) {
 				totalExpectedBytes := expectedBytesPerRow * pbm.height
 				fmt.Printf("Expected total bytes for pixel data: %d\n", totalExpectedBytes)
 
-				// Create a buffer to hold all pixel data
+				// Créer un tampon pour contenir toutes les données des pixels.
 				allPixelData := make([]byte, totalExpectedBytes)
 
-				// Read the file content directly into the buffer
+				// Lire le contenu du fichier directement dans le tampon.
 				fileContent, err := os.ReadFile(filename)
 				if err != nil {
 					return nil, fmt.Errorf("error reading file: %v", err)
 				}
 
-				// Copy the relevant part of the file content into the pixel data buffer
+				// Copier la partie pertinente du contenu du fichier dans le tampon des données des pixels.
 				copy(allPixelData, fileContent[len(fileContent)-totalExpectedBytes:])
 
-				// Process the buffer to update pbm.data
+				// Processus pour mettre à jour pbm.data en utilisant le tampon des données des pixels.
 				byteIndex := 0
 				for y := 0; y < pbm.height; y++ {
 					for x := 0; x < pbm.width; x++ {
@@ -120,7 +120,7 @@ func (pbm *PBM) Set(x, y int, value bool) {
 	pbm.data[x][y] = value
 }
 
-// Save saves the PBM image to a file and returns an error if there was a problem.
+// Save enregistre l'image PBM dans un fichier et retourne une erreur en cas de problème.
 func (pbm *PBM) Save(filename string) error {
 	file, err := os.Create(filename)
 	if err != nil {
@@ -152,19 +152,24 @@ func (pbm *PBM) Save(filename string) error {
 				return fmt.Errorf("error writing pixel data: %v", err)
 			}
 		}
-	} else if pbm.magicNumber == "P4" { // Pour le P4
+	} else if pbm.magicNumber == "P4" {
+		// Parcourir chaque ligne de l'image.
 		for _, row := range pbm.data {
+			// Parcourir les pixels par groupe de 8 (octets).
 			for x := 0; x < pbm.width; x += 8 {
 				var byteValue byte
+				// Parcourir les 8 pixels du groupe et construire la valeur du byte correspondant.
 				for i := 0; i < 8 && x+i < pbm.width; i++ {
 					bitIndex := 7 - i
+					// Si le pixel est vrai (noir), définir le bit correspondant à 1.
 					if row[x+i] {
 						byteValue |= 1 << bitIndex
 					}
 				}
+				// Écrire le byte (groupe de 8 pixels) dans le fichier.
 				_, err = file.Write([]byte{byteValue})
 				if err != nil {
-					return fmt.Errorf("error writing pixel data: %v", err)
+					return fmt.Errorf("erreur lors de l'écriture des données des pixels : %v", err)
 				}
 			}
 		}
@@ -182,7 +187,7 @@ func (pbm *PBM) Invert() {
 	}
 }
 
-// Flip flips the PBM image horizontally.
+// Flip retourne horizontalement l'image PBM.
 func (pbm *PBM) Flip() {
 	for y := 0; y < pbm.height; y++ {
 		start := make([]bool, pbm.width)
@@ -196,10 +201,11 @@ func (pbm *PBM) Flip() {
 	}
 }
 
-// Flop flops the PBM image vertically.
+// Flop retourne verticalement l'image PBM.
 func (pbm *PBM) Flop() {
 	cursor := pbm.height - 1
 	for y := range pbm.data {
+		// Échanger les données de la ligne actuelle avec la ligne correspondante en partant du bas.
 		temp := pbm.data[y]
 		pbm.data[y] = pbm.data[cursor]
 		pbm.data[cursor] = temp
@@ -210,7 +216,7 @@ func (pbm *PBM) Flop() {
 	}
 }
 
-// SetMagicNumber sets the magic number of the PBM image.
+// SetMagicNumber définit le numéro magique de l'image PBM.
 func (pbm *PBM) SetMagicNumber(magicNumber string) {
 	pbm.magicNumber = magicNumber
 

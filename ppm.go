@@ -444,61 +444,26 @@ func (ppm *PPM) DrawFilledRectangle(p1 Point, width, height int, color Pixel) {
 
 // Fonction DrawCircle dessine un cercle avec le centre, le rayon et la couleur spécifiés.
 func (ppm *PPM) DrawCircle(center Point, radius int, color Pixel) {
-	// Initialise les coordonnées du cercle et les erreurs associées.
-	x := radius
-	y := 0
-	err := 0
-
-	// Boucle principale pour dessiner le cercle en utilisant l'algorithme de Bresenham.
-	for x >= y {
-		// Définit les pixels du cercle par symétrie dans les huit octants.
-		ppm.Set(center.X+x, center.Y-y, color)
-		ppm.Set(center.X+y, center.Y-x, color)
-		ppm.Set(center.X-y, center.Y-x, color)
-		ppm.Set(center.X-x, center.Y-y, color)
-		ppm.Set(center.X-x, center.Y+y, color)
-		ppm.Set(center.X-y, center.Y+x, color)
-		ppm.Set(center.X+y, center.Y+x, color)
-		ppm.Set(center.X+x, center.Y+y, color)
-
-		// Mise à jour des coordonnées et de l'erreur.
-		y++
-		if err <= 0 {
-			err += 2*y + 1
-		}
-
-		if err > 0 {
-			x--
-			err -= 2*x + 1
+	// Parcourir chaque pixel
+	for y := 0; y < ppm.height; y++ {
+		for x := 0; x < ppm.width; x++ {
+			// Calculer la distance du pixel actuel au centre du cercle
+			dx := float64(x - center.X)
+			dy := float64(y - center.Y)
+			distance := math.Sqrt(dx*dx + dy*dy)
+			// Vérifier si la distance est approximativement égale au rayon spécifié
+			if math.Abs(distance-float64(radius)*0.85) < 0.5 {
+				ppm.data[y][x] = color
+			}
 		}
 	}
 }
 
-// Fonction DrawFilledCircle dessine un cercle rempli avec le centre, le rayon et la couleur spécifiés.
 func (ppm *PPM) DrawFilledCircle(center Point, radius int, color Pixel) {
-	// Initialise les coordonnées du cercle et les erreurs associées.
-	x := radius
-	y := 0
-	err := 0
-
-	// Boucle principale pour dessiner le cercle en utilisant l'algorithme de Bresenham.
-	for x >= y {
-		// Boucle pour dessiner chaque ligne horizontale du cercle.
-		for i := center.X - x; i <= center.X+x; i++ {
-			ppm.Set(i, center.Y+y, color)
-			ppm.Set(i, center.Y-y, color)
-		}
-
-		// Mise à jour des coordonnées et de l'erreur.
-		y++
-		if err <= 0 {
-			err += 2*y + 1
-		}
-
-		if err > 0 {
-			x--
-			err -= 2*x + 1
-		}
+	// Dessiner un cercle avec le rayon de plus en plus petit jusqu'à ce qu'il atteigne 0
+	for radius >= 0 {
+		ppm.DrawCircle(center, radius, color)
+		radius--
 	}
 }
 
@@ -536,40 +501,31 @@ func (ppm *PPM) DrawPolygon(points []Point, color Pixel) {
 	ppm.DrawLine(points[len(points)-1], points[0], color)
 }
 
-// Fonction DrawFilledPolygon dessine un polygone rempli avec les points spécifiés et la couleur.
 func (ppm *PPM) DrawFilledPolygon(points []Point, color Pixel) {
-	// Trie les points par ordre croissant de Y pour simplifier le remplissage du polygone.
-	sort.Slice(points, func(i, j int) bool {
-		return points[i].Y < points[j].Y
-	})
+	// Dessine le contour du polygone
+	ppm.DrawPolygon(points, color)
 
-	// Initialise les variables pour les extrémités gauche et droite du polygone.
-	leftX := float64(points[0].X)
-	rightX := float64(points[0].X)
+	// Parcourt chaque ligne de l'image PPM
+	for i := 0; i < ppm.height; i++ {
+		// positions : indices des pixels de la ligne ayant la couleur spécifiée
+		var positions []int
+		// number_points : nombre de pixels de la ligne avec la couleur spécifiée
+		var number_points int
 
-	// Boucle principale pour dessiner chaque ligne horizontale du polygone.
-	for y := points[0].Y; y <= points[len(points)-1].Y; y++ {
-		// Boucle pour trouver les points d'intersection avec les côtés du polygone.
-		for i := 0; i < len(points)-1; i++ {
-			if y >= points[i].Y && y < points[i+1].Y || y >= points[i+1].Y && y < points[i].Y {
-				x := interpolate(points[i], points[i+1], y)
-
-				// Mise à jour des extrémités gauche et droite.
-				if x < leftX {
-					leftX = x
-				}
-				if x > rightX {
-					rightX = x
-				}
+		// Parcourt chaque colonne de la ligne
+		for j := 0; j < ppm.width; j++ {
+			if ppm.data[i][j] == color {
+				number_points++
+				positions = append(positions, j)
 			}
 		}
 
-		// Dessine la ligne horizontale entre les extrémités gauche et droite.
-		ppm.DrawLine(Point{X: int(leftX), Y: y}, Point{X: int(rightX), Y: y}, color)
-
-		// Réinitialise les extrémités gauche et droite.
-		leftX = float64(points[0].X)
-		rightX = float64(points[0].X)
+		// Si plus d'un point, remplir la zone entre les deux premiers points
+		if number_points > 1 {
+			for k := positions[0] + 1; k < positions[len(positions)-1]; k++ {
+				ppm.data[i][k] = color
+			}
+		}
 	}
 }
 

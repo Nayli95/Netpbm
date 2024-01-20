@@ -24,7 +24,7 @@ func ReadPGM(filename string) (*PGM, error) {
 
 	reader := bufio.NewReader(file)
 
-	// Read magic number
+	// Lire magic number
 	magicNumber, err := reader.ReadString('\n')
 	if err != nil {
 		return nil, fmt.Errorf("error reading magic number: %v", err)
@@ -34,7 +34,7 @@ func ReadPGM(filename string) (*PGM, error) {
 		return nil, fmt.Errorf("invalid magic number: %s", magicNumber)
 	}
 
-	// Read dimensions
+	// Lire les dimensions
 	dimensions, err := reader.ReadString('\n')
 	if err != nil {
 		return nil, fmt.Errorf("error reading dimensions: %v", err)
@@ -48,7 +48,7 @@ func ReadPGM(filename string) (*PGM, error) {
 		return nil, fmt.Errorf("invalid dimensions: width and height must be positive")
 	}
 
-	// Read max value
+	// Lire la valeur maximale
 	maxValue, err := reader.ReadString('\n')
 	if err != nil {
 		return nil, fmt.Errorf("error reading max value: %v", err)
@@ -60,12 +60,12 @@ func ReadPGM(filename string) (*PGM, error) {
 		return nil, fmt.Errorf("invalid max value: %v", err)
 	}
 
-	// Read image data
+	// Lire l'image data
 	data := make([][]uint8, height)
 	expectedBytesPerPixel := 1
 
 	if magicNumber == "P2" {
-		// Read P2 format (ASCII)
+		// Lire le format P2 (ASCII)
 		for y := 0; y < height; y++ {
 			line, err := reader.ReadString('\n')
 			if err != nil {
@@ -87,7 +87,7 @@ func ReadPGM(filename string) (*PGM, error) {
 			data[y] = rowData
 		}
 	} else if magicNumber == "P5" {
-		// Read P5 format (binary)
+		// Lire le format P5 (binary)
 		for y := 0; y < height; y++ {
 			row := make([]byte, width*expectedBytesPerPixel)
 			n, err := reader.Read(row)
@@ -110,14 +110,16 @@ func ReadPGM(filename string) (*PGM, error) {
 		}
 	}
 
-	// Return the PGM struct
+	// Return la struct PGM
 	return &PGM{data, width, height, magicNumber, max}, nil
 }
 
+// Size retourne la largeur et la hauteur de l'image PGM.
 func (pgm *PGM) Size() (int, int) {
 	return pgm.width, pgm.height
 }
 
+// At retourne la valeur du pixel à la position (x, y) dans l'image PGM.
 func (pgm *PGM) At(x, y int) uint8 {
 	if x >= 0 && x < pgm.width && y >= 0 && y < pgm.height {
 		return pgm.data[y][x]
@@ -125,34 +127,36 @@ func (pgm *PGM) At(x, y int) uint8 {
 	return 0
 }
 
-// Set sets the value of the pixel at (x, y).
+// Set définit la valeur du pixel à la position (x, y).
 func (pgm *PGM) Set(x, y int, value uint8) {
 	if x >= 0 && x < pgm.width && y >= 0 && y < pgm.height {
 		pgm.data[y][x] = value
 	}
 }
 
-// Save saves the PGM image to a file in the opposite format (P2 or P5) and returns an error if there was a problem.
+// Save enregistre l'image PGM dans un fichier au format opposé (P2 ou P5) et retourne une erreur en cas de problème.
 func (pgm *PGM) Save(filename string) error {
+	// Ouvrir le fichier pour écriture.
 	file, err := os.Create(filename)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
+	// Créer un écrivain pour le fichier.
 	writer := bufio.NewWriter(file)
 	_, err = fmt.Fprintln(writer, pgm.magicNumber)
 	if err != nil {
 		return fmt.Errorf("error writing magic number: %v", err)
 	}
 
-	// Write dimensions
+	// Écrire les dimensions.
 	_, err = fmt.Fprintf(writer, "%d %d\n", pgm.width, pgm.height)
 	if err != nil {
 		return fmt.Errorf("error writing dimensions: %v", err)
 	}
 
-	// Write max value
+	// Écrire la valeur maximale.
 	_, err = fmt.Fprintln(writer, pgm.max)
 	if err != nil {
 		return fmt.Errorf("error writing max value: %v", err)
@@ -163,7 +167,7 @@ func (pgm *PGM) Save(filename string) error {
 		}
 	}
 
-	// Write image data
+	// Écrire les data de l'image.
 	if pgm.magicNumber == "P2" {
 		err = saveP2PGM(writer, pgm)
 		if err != nil {
@@ -179,17 +183,17 @@ func (pgm *PGM) Save(filename string) error {
 	return writer.Flush()
 }
 
-// saveP2PGM saves the PGM image in P2 format (ASCII).
+// saveP2PGM enregistre l'image PGM dans le format P2 (ASCII).
 func saveP2PGM(file *bufio.Writer, pgm *PGM) error {
 	for y := 0; y < pgm.height; y++ {
 		for x := 0; x < pgm.width; x++ {
-			// Write the pixel value
+			// Écrire la valeur du pixel.
 			_, err := fmt.Fprint(file, pgm.data[y][x])
 			if err != nil {
 				return fmt.Errorf("error writing pixel data at row %d, column %d: %v", y, x, err)
 			}
 
-			// Add a space after each pixel, except the last one in a row
+			// Ajouter un espace après chaque pixel, sauf le dernier de la ligne.
 			if x < pgm.width-1 {
 				_, err = fmt.Fprint(file, " ")
 				if err != nil {
@@ -197,7 +201,8 @@ func saveP2PGM(file *bufio.Writer, pgm *PGM) error {
 				}
 			}
 		}
-		// Add a newline after each row
+
+		// Ajouter une newline après chaque ligne.
 		_, err := fmt.Fprintln(file)
 		if err != nil {
 			return fmt.Errorf("error writing newline after row %d: %v", y, err)
@@ -206,7 +211,7 @@ func saveP2PGM(file *bufio.Writer, pgm *PGM) error {
 	return nil
 }
 
-// saveP5PGM saves the PGM image in P5 format (binary).
+// saveP5PGM enregistre l'image PGM dans le format P5 (binaire).
 func saveP5PGM(file *bufio.Writer, pgm *PGM) error {
 	for y := 0; y < pgm.height; y++ {
 		row := make([]byte, pgm.width)
@@ -221,7 +226,7 @@ func saveP5PGM(file *bufio.Writer, pgm *PGM) error {
 	return nil
 }
 
-// Invert inverts the colors of the PGM image.
+// Invert inverse les couleurs de l'image PGM.
 func (pgm *PGM) Invert() {
 	for i := range pgm.data {
 		for j := range pgm.data[i] {
@@ -230,7 +235,7 @@ func (pgm *PGM) Invert() {
 	}
 }
 
-// Flip flips the PGM image horizontally.
+// Flip retourne l'image PGM horizontalement.
 func (pgm *PGM) Flip() {
 	for i := range pgm.data {
 		for j, k := 0, len(pgm.data[i])-1; j < k; j, k = j+1, k-1 {
@@ -239,24 +244,26 @@ func (pgm *PGM) Flip() {
 	}
 }
 
-// Flop flops the PGM image vertically.
+// Flop retourne l'image PGM verticalement.
 func (pgm *PGM) Flop() {
 	for i := 0; i < pgm.height/2; i++ {
 		pgm.data[i], pgm.data[pgm.height-i-1] = pgm.data[pgm.height-i-1], pgm.data[i]
 	}
 }
 
-// SetMagicNumber sets the magic number of the PGM image.
+// SetMagicNumber définit le numéro magique de l'image PGM.
 func (pgm *PGM) SetMagicNumber(magicNumber string) {
 	pgm.magicNumber = magicNumber
 }
 
+// SetMaxValue définit la valeur maximale des pixels dans l'image PGM.
 func (pgm *PGM) SetMaxValue(maxValue uint8) {
 	for y := 0; y < pgm.height; y++ {
 		for x := 0; x < pgm.width; x++ {
-
+			// Calculer la nouvelle valeur du pixel en ajustant l'échelle selon la nouvelle valeur maximale.
 			scaledValue := float64(pgm.data[y][x]) * float64(maxValue) / float64(pgm.max)
 
+			// Convertir la valeur à virgule flottante en entier non signé et mettre à jour la valeur du pixel.
 			newValue := uint8(scaledValue)
 			pgm.data[y][x] = newValue
 		}
@@ -265,39 +272,53 @@ func (pgm *PGM) SetMaxValue(maxValue uint8) {
 	pgm.max = uint(maxValue)
 }
 
+// Rotate90CW fait pivoter l'image PGM de 90 degrés dans le sens des aiguilles d'une montre.
 func (pgm *PGM) Rotate90CW() {
+	// Vérifier que les dimensions de l'image sont valides.
 	if pgm.width <= 0 || pgm.height <= 0 {
 		return
 	}
 
+	// Créer un nouveau tableau pour stocker les données pivotées.
 	newData := make([][]uint8, pgm.width)
 	for i := 0; i < pgm.width; i++ {
 		newData[i] = make([]uint8, pgm.height)
 		for j := 0; j < pgm.height; j++ {
+			// Effectuer la rotation en échangeant les indices i et j.
 			newData[i][j] = pgm.data[pgm.height-j-1][i]
 		}
 	}
+
+	// Mettre à jour les données de l'image et échanger les dimensions.
 	pgm.data = newData
 	pgm.width, pgm.height = pgm.height, pgm.width
 }
 
+// ToPBM convertit l'image PGM en une image PBM (Portable Bitmap).
 func (pgm *PGM) ToPBM() *PBM {
+	// Créer une nouvelle image PBM avec les mêmes dimensions.
 	pbm := &PBM{
 		data:        make([][]bool, pgm.height),
 		width:       pgm.width,
 		height:      pgm.height,
 		magicNumber: "P1",
 	}
+
+	// Remplir les données de l'image PBM en convertissant les valeurs de pixels en valeurs booléennes.
 	for y := 0; y < pgm.height; y++ {
 		pbm.data[y] = make([]bool, pgm.width)
 		for x := 0; x < pgm.width; x++ {
 			pbm.data[y][x] = pgm.data[y][x] < uint8(pgm.max/2)
 		}
 	}
+
+	// Retourner l'image PBM résultante.
 	return pbm
 }
 
+// PrintData affiche les données de l'image PGM.
 func (pgm *PGM) PrintData() {
+	// Parcourir chaque ligne et colonne de l'image et afficher la valeur du pixel.
 	for i := 0; i < pgm.height; i++ {
 		for j := 0; j < pgm.width; j++ {
 			fmt.Printf("%d ", pgm.data[i][j])
